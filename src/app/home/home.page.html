@@ -1,14 +1,15 @@
 <ion-header [translucent]="true">
-  <ion-toolbar id="header">
+  <ion-toolbar class="header">
     <ion-title>Pokedex</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-content">
+
   <ion-grid>
     <ion-row>
       <ion-col size="8" sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of pokemons">
-        <ion-card id="poke-card">
+        <ion-card id="poke-card" (click)="goToPokemonDetail(pokemon.id)">
           <div class="pokemon-card-wrapper">
             <div class="pokemon-image">
               <img [src]="pokemon.image" alt="{{ pokemon.name }}" />
@@ -35,8 +36,10 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <ion-infinite-scroll (ionInfinite)="loadMore($event)">
     <ion-infinite-scroll-content loadingSpinner="dots" loadingText="Carregando...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
 </ion-content>

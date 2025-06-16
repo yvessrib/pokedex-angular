@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -21,8 +22,8 @@ import {
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'pokedex.page.html',
-  styleUrls: ['pokedex.page.scss'],
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -47,7 +48,11 @@ import {
 export class HomePage implements OnInit {
   pokemons: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) {}
+
+  goToPokemonDetail(pokemonId: number) {
+    this.router.navigate(['/pokedex', pokemonId]);
+  }
 
   ngOnInit() {
     this.loadPokemons();
@@ -73,7 +78,7 @@ export class HomePage implements OnInit {
               id: data.id,
               idFormatted: data.id.toString().padStart(3, '0'),
               name: data.name,
-              image: data.sprites.front_default,
+              image: data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
               types: data.types.map((t: any) => t.type.name)
             }));
 
