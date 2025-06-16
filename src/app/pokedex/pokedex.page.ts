@@ -21,8 +21,8 @@ import {
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  templateUrl: 'pokedex.page.html',
+  styleUrls: ['pokedex.page.scss'],
   standalone: true,
   imports: [
     CommonModule,
