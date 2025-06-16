@@ -56,6 +56,7 @@ export class HomePage implements OnInit {
           console.log('Pokémon carregado:', data);
           const pokemon = {
             id: data.id,
+            idFormatted: data.id.toString().padStart(3, '0'),
             name: data.name,
             image: data.sprites.front_default,
             types: data.types.map((t: any) => t.type.name)
@@ -69,6 +70,7 @@ export class HomePage implements OnInit {
       });
     }
   }
+  
 
   getTypeColor(type: string): string {
     const colors: { [key: string]: string } = {

@@ -4,21 +4,33 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-content">
   <ion-grid>
     <ion-row>
-      <ion-col size="6" sizeMd="4" sizeLg="3" *ngFor="let pokemon of pokemons">
-        <ion-card [style.background]="getTypeColor(pokemon.types[0])">
-          <img [src]="pokemon.image" [alt]="pokemon.name" style="width: 100%; height: auto;" />
-          <ion-card-header>
-            <ion-card-title>#{{ pokemon.id }} - {{ pokemon.name | titlecase }}</ion-card-title>
-            <ion-card-subtitle>Type: {{ pokemon.types.join(', ') }}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-chip *ngFor="let type of pokemon.types" color="light">
-              {{ type }}
-            </ion-chip>
-          </ion-card-content>
+      <ion-col size="8" sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of pokemons">
+        <ion-card id="poke-card">
+          <div class="pokemon-card-wrapper">
+            <div class="pokemon-image">
+              <img [src]="pokemon.image" alt="{{ pokemon.name }}" />
+            </div>
+            <div class="poke-card-content" [style.background]="getTypeColor(pokemon.types[0])">
+              <ion-card-header>
+                <ion-card-title>
+                  <div class="pokemon-header">
+                    {{ pokemon.name | titlecase }}
+                    <ion-chip slot="end" color="primary" class="pokemon-id">
+                      #{{ pokemon.idFormatted }}
+                    </ion-chip>
+                  </div>
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-chip *ngFor="let type of pokemon.types">
+                  {{ type }}
+                </ion-chip>
+              </ion-card-content>
+            </div>
+          </div>
         </ion-card>
       </ion-col>
     </ion-row>
