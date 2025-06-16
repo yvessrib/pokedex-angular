@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 export const routes: Routes = [
   {
@@ -15,3 +16,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pokemon-detail/pokemon-detail.page').then( m => m.PokemonDetailPage)
   },
 ];
+
+export const AppProviders = [
+  provideHttpClient(),
+]
