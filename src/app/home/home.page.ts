@@ -14,7 +14,9 @@ import {
   IonCol,
   IonGrid,
   IonRow,
-  IonChip // necessário para os tipos
+  IonChip, // necessário para os tipos
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -37,7 +39,9 @@ import {
     IonCol,
     IonGrid,
     IonRow,
-    IonChip
+    IonChip,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
   ],
 })
 export class HomePage implements OnInit {
@@ -49,29 +53,51 @@ export class HomePage implements OnInit {
     this.loadPokemons();
   }
 
-  async loadPokemons() {
-    for (let i = 1; i <= 151; i++) {
-      this.http.get(`https://pokeapi.co/api/v2/pokemon/${i}`).subscribe({
-        next: (data: any) => {
-          console.log('Pokémon carregado:', data);
-          const pokemon = {
-            id: data.id,
-            idFormatted: data.id.toString().padStart(3, '0'),
-            name: data.name,
-            image: data.sprites.front_default,
-            types: data.types.map((t: any) => t.type.name)
-          };
-          this.pokemons.push(pokemon);
-          this.pokemons.sort((a, b) => a.id - b.id);
-        },
-        error: (err) => {
-          console.error(`Erro ao carregar o Pokémon ${i}:`, err);
-        }
-      });
-    }
-  }
-  
+  limit = 18
+  offset = 0;
+  isLoading = false;
+  isDone = false
 
+  async loadPokemons() {
+    if (this.isLoading || this.isDone) return;
+
+    this.isLoading = true;
+
+    this.http.get<any>(`https://pokeapi.co/api/v2/pokemon?offset=${this.offset}&limit=${this.limit}`)
+    .subscribe({
+      next: (response) => {
+        const requests = response.results.map((pokemon: any) => this.http.get(pokemon.url));
+        Promise.all(requests.map((req: { toPromise: () => any; }) => req.toPromise()))
+          .then((details: any[]) => {
+            const newPokemons = details.map((data: any) => ({
+              id: data.id,
+              idFormatted: data.id.toString().padStart(3, '0'),
+              name: data.name,
+              image: data.sprites.front_default,
+              types: data.types.map((t: any) => t.type.name)
+            }));
+
+            this.pokemons.push(...newPokemons);
+            this.pokemons.sort((a, b) => a.id - b.id);
+
+            this.offset += this.limit;
+            if (!response.next) this.isDone = true;
+            this.isLoading = false;
+          });
+      },
+      error: (err) => {
+        console.error(`Erro ao carregar pokémons:`, err);
+        this.isLoading = false;
+      }
+    });
+}
+  loadMore(event: any) {
+    this.loadPokemons();
+    setTimeout(() => {
+      event.target.complete();
+    }, 500);
+  }
+    
   getTypeColor(type: string): string {
     const colors: { [key: string]: string } = {
       fire: '#F08030',
