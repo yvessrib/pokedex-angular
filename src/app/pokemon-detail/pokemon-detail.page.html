@@ -1,20 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="header" >
-    <ion-title>Pokedex - {{ pokemon.name | titlecase }} #{{pokemon.idFormatted}}</ion-title>
+    <ion-title *ngIf="pokemon" >Pokedex - {{ pokemon?.name | titlecase }} #{{pokemon?.idFormatted}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-content">
-  <div class="pokemon-detail-wrapper" [style.background]="getTypeColor(pokemon.types[0])">    
+<ion-content *ngIf="pokemon" [fullscreen]="true" class="ion-content">
+  <div class="pokemon-detail-wrapper" [style.background]="getTypeColor(pokemon?.types[0])">    
     <div class="pokemon-detail-header">
       <p>{{ pokemon.name | titlecase }}</p>
-      <img [src]="pokemon.image" alt="{{ pokemon.name }}" class="pokemon-image" />
+      <img [src]="pokemon?.image" alt="{{ pokemon?.name }}" class="pokemon-image" />
     </div>
 
     <div class="pokemon-detail-content">
-      <p>
-        asdadasdasdasdadsadsdasd
-      </p>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </ion-content>

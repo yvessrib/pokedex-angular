@@ -2,16 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PokemonService } from '../services/pokemon.service';
+import { PokemonTabsComponent } from './tabs/pokemon-tabs.component';
 
 @Component({
   selector: 'app-pokemon-detail',
   templateUrl: './pokemon-detail.page.html',
   styleUrls: ['./pokemon-detail.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    IonContent, 
+    IonHeader, 
+    IonTitle, 
+    IonToolbar, 
+    CommonModule, 
+    FormsModule, 
+    PokemonTabsComponent,
+    RouterOutlet
+  ]
 })
 export class PokemonDetailPage implements OnInit {
 
@@ -23,13 +33,12 @@ export class PokemonDetailPage implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
-    this.pokemonService.fetchPokemon(id).subscribe(); // dispara o fetch
-    this.pokemonService.selectedPokemon$.subscribe(p => {
+    this.pokemonService.fetchPokemon(id).subscribe(p => {
       this.pokemon = p;
     });
 
     console.log(this.pokemon);
-}
+  }
 
   getTypeColor(type: string): string {
     const colors: { [key: string]: string } = {

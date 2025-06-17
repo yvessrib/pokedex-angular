@@ -1,0 +1,30 @@
+<ion-tabs >
+  <ion-tab-bar class="pokemon-tabs" slot="top">
+    <ion-tab-button 
+      tab="stats" 
+      class="tab" 
+      [ngClass]="{'active': activeTab === 'stats'}"
+      (click)="selectTab('stats')"
+    >
+      Stats
+    </ion-tab-button>
+
+    <ion-tab-button 
+      tab="skills"  
+      class="tab"
+      [ngClass]="{'active': activeTab === 'skills'}"
+      (click)="selectTab('skills')"
+    >
+      Skills
+    </ion-tab-button>
+
+    <ion-tab-button 
+      tab="evolution" 
+      class="tab"
+      [ngClass]="{'active': activeTab === 'evolution'}"
+      (click)="selectTab('evolution')"
+    >
+      Evolução
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

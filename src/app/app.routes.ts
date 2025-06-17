@@ -13,8 +13,25 @@ export const routes: Routes = [
   },
   {
     path: 'pokedex/:id',
-    loadComponent: () => import('./pokemon-detail/pokemon-detail.page').then( m => m.PokemonDetailPage)
+    loadComponent: () => import('./pokemon-detail/pokemon-detail.page').then( m => m.PokemonDetailPage),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pokemon-detail/tabs/pokemon-tabs.component').then(m => m.PokemonTabsComponent),
+        children: [
+          {
+            path: 'stats',
+            loadComponent: () => import('./pokemon-detail/tabs/stats/tabs-stats.component').then(m => m.PokemonsStatsComponent)
+          },
+          {
+            path: 'skills',
+            loadComponent: () => import('./pokemon-detail/tabs/skills/tabs-skills.component').then(m => m.PokemonSkillsComponent)
+          }
+        ]
+      }
+    ]
   },
+  
 ];
 
 export const AppProviders = [
