@@ -11,7 +11,14 @@
       <img [src]="pokemon?.image" alt="{{ pokemon?.name }}" class="pokemon-image" />
     </div>
 
+    
+
     <div class="pokemon-detail-content">
+      <div class="pokemon-types">
+        <ion-chip *ngFor="let type of pokemon.types"  [ngStyle]="{ '--background': getTypeColor(type), 'color': '#fff' }" class="pokemon-type-chip">
+          {{ type | titlecase }}
+        </ion-chip>
+      </div>
       <router-outlet></router-outlet>
     </div>
   </div>

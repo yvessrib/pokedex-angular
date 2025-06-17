@@ -38,5 +38,11 @@ export class PokemonTabsComponent implements OnInit {
   selectTab(tab: string) {
     this.activeTab = tab;
   }
+
+  get typeColor(): string {
+    if (!this.pokemon?.types?.length) return '#fff';
+    const primaryType = this.pokemon.types[0];
+    return this.pokemonService.getTypeColor(primaryType);
+  }
   
 }

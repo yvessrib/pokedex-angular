@@ -45,6 +45,9 @@
 
 .pokemon-detail-content {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   z-index: 5;
   background: #fff;
   border-radius: 24px;
@@ -52,4 +55,8 @@
   margin: -40px 8px 8px 8px; // Sobe por cima do header colorido
   padding: 24px;
   height: 100vh;
+}
+
+.pokemon-types {
+  margin-top: 30px;;
 }

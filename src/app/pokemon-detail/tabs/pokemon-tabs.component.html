@@ -4,6 +4,10 @@
       tab="stats" 
       class="tab" 
       [ngClass]="{'active': activeTab === 'stats'}"
+      [ngStyle]="{
+        '--background': activeTab === 'stats' ? typeColor : 'transparent',
+        '--color': activeTab === 'stats' ? 'white' : '#444'
+      }"
       (click)="selectTab('stats')"
     >
       Stats
@@ -13,6 +17,10 @@
       tab="skills"  
       class="tab"
       [ngClass]="{'active': activeTab === 'skills'}"
+      [ngStyle]="{
+        '--background': activeTab === 'skills' ? typeColor : 'transparent',
+        '--color': activeTab === 'skills' ? 'white' : '#444'
+      }"
       (click)="selectTab('skills')"
     >
       Skills
@@ -22,9 +30,13 @@
       tab="evolution" 
       class="tab"
       [ngClass]="{'active': activeTab === 'evolution'}"
+      [ngStyle]="{
+        '--background': activeTab === 'evolution' ? typeColor : 'transparent',
+        '--color': activeTab === 'evolution' ? 'white' : '#444'
+      }"
       (click)="selectTab('evolution')"
     >
-      Evolução
+      Evolution
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>
