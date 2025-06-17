@@ -1,7 +1,7 @@
 .pokemon-detail-wrapper {
   position: relative;
-  min-height: 100vh;
   background: transparent;
+  height: auto;
 }
 
 .pokemon-detail-header {
@@ -54,8 +54,10 @@
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
   margin: -40px 8px 8px 8px; // Sobe por cima do header colorido
   padding: 24px;
-  height: 100vh;
-}
+  min-height: 100vh
+  // height: 100vh;
+  // min-height: calc(100vh - 120px); // ✅ Para garantir uma altura mínima
+} 
 
 .pokemon-types {
   margin-top: 30px;;

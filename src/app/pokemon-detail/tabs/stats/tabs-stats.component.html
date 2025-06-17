@@ -1,3 +1,47 @@
-<ion-content>
-  sdadasdasdasdasdasdasdasdasdasdasd
+<ion-content class="ion-content" >
+  <div class="pokemon-stats-container">
+    <div class="pokemon-description" *ngIf="pokemon?.description">
+      <p>{{ pokemon.description }}</p>
+    </div>
+
+    <div class="pokemon-measurements">
+      <div class="measurement-row">
+        <span class="label">Height</span>
+        <span class="value imperial">{{ (pokemon.height * 3.28084) | number:'1.2-2' }} ft</span>
+        <span class="value metric">{{ pokemon.height }} m</span>
+      </div>
+      <div class="measurement-row">
+        <span class="label">Weight</span>
+        <span class="value imperial">{{ (pokemon.weight * 2.20462) | number:'1.2-2' }} lbs</span>
+        <span class="value metric">{{ pokemon.weight }} kg</span>
+      </div>
+    </div>
+
+    <div class="pokemon-details">
+      <div class="pokemon-abilities">
+        <strong>Inate Skills</strong>
+        <p *ngFor="let ability of pokemon.abilities">
+          {{ ability | titlecase }}
+        </p>
+      </div>
+
+      <div class="pokemon-stats" *ngIf="pokemon?.stats">
+        <strong>Base Stats</strong>
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let stat of pokemon.stats | keyvalue">
+              <td>{{ stat.key }}</td>
+              <td>{{ stat.value }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </ion-content>

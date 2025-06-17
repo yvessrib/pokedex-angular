@@ -40,6 +40,8 @@
   --background: #a50000;
 }
 
-.ion-content {
+ion-content.ion-content {
   --background: #fff;
+  --padding-top: 0px;
+  --padding-bottom: 0;
 }

@@ -23,15 +23,6 @@ export class PokemonTabsComponent implements OnInit {
   pokemon: any;
 
   constructor(private route: ActivatedRoute,  private pokemonService: PokemonService) {}
-  
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) return;
-
-    this.pokemonService.selectedPokemon$.subscribe(p => {
-      this.pokemon = p;
-    });
-  }
 
   activeTab: string = 'stats';
 
@@ -45,4 +36,12 @@ export class PokemonTabsComponent implements OnInit {
     return this.pokemonService.getTypeColor(primaryType);
   }
   
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    this.pokemonService.selectedPokemon$.subscribe(p => {
+      this.pokemon = p;
+    });
+  }
 }

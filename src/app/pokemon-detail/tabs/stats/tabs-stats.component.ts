@@ -17,14 +17,29 @@ export class PokemonsStatsComponent implements OnInit {
   pokemon: any;
 
   constructor(private route: ActivatedRoute,  private pokemonService: PokemonService) {}
+
+  labelMap: { [key: string]: string } = {
+    hp: 'Health',
+    attack: 'Attack',
+    defense: 'Defense',
+    specialAttack: 'Special Attack',
+    specialDefense: 'Special Defense',
+    speed: 'Speed'
+  };
+
+  getLabel(key: string): string {
+    return this.labelMap[key] || key;
+  }
   
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) return;
+    const id = this.route.root.firstChild?.snapshot.paramMap.get('id')
 
     this.pokemonService.selectedPokemon$.subscribe(p => {
       this.pokemon = p;
+      console.log("Stats object:", this.pokemon.stats);
+      console.log("stats page pokemon", this.pokemon);
+      console.log("Stats keys:", Object.keys(this.pokemon.stats));
+
     });
   }
-  
 }
