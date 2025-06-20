@@ -18,7 +18,22 @@ import {
   IonChip, // necessário para os tipos
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  IonIcon,
+  IonButton,
+  IonMenuButton,
+  IonMenu,
+  IonList,
+  IonItem,
+  IonLabel,
 } from '@ionic/angular/standalone';
+
+import { addIcons } from 'ionicons';
+import { star, starOutline } from 'ionicons/icons';
+
+addIcons({
+  'star': star,
+  'star-outline': starOutline
+});
 
 @Component({
   selector: 'app-home',
@@ -43,10 +58,18 @@ import {
     IonChip,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
+    IonIcon,
+    IonButton,
+    IonMenuButton,
+    IonMenu,
+    IonList,
+    IonItem,
+    IonLabel
   ],
 })
 export class HomePage implements OnInit {
   pokemons: any[] = [];
+  favorites = new Set<number>();
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -54,7 +77,31 @@ export class HomePage implements OnInit {
     this.router.navigate(['/pokedex', pokemonId, 'stats']);
   }
 
+  toggleFavorite(pokemon: any, event: Event) {
+    event.stopPropagation();
+
+    if (this.favorites.has(pokemon.id)) {
+      this.favorites.delete(pokemon.id);
+    } else {
+      this.favorites.add(pokemon.id);
+    }
+    localStorage.setItem('favorites', JSON.stringify(Array.from(this.favorites)));
+  }
+
+  isFavorite(pokemonId: number): boolean {
+    return this.favorites.has(pokemonId);
+  }
+
+  getFavoritePokemons() {
+    return this.pokemons.filter(p => this.favorites.has(p.id));
+  }
+
   ngOnInit() {
+    const storedFavorites = localStorage.getItem('favorites');
+    if (storedFavorites) {
+      this.favorites = new Set(JSON.parse(storedFavorites));
+    }
+
     this.loadPokemons();
   }
 

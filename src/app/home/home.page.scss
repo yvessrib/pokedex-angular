@@ -7,9 +7,22 @@
   border: none;
 }
 
+.ion-row {
+  display: flex;
+  justify-content: center;
+  padding: 2px;
+}
+
+.favorite-icon {
+  font-size: 25px;
+  margin-left: auto;
+  color: #fff;
+  cursor: pointer;
+}
+
 .pokemon-card-wrapper {
   position: relative;
-  padding-top: 50px; /* reserva espaço no topo para a imagem */
+  padding-top: 80px; /* reserva espaço no topo para a imagem */
 }
 
 .poke-card-content {
@@ -28,7 +41,7 @@
 
 .pokemon-image {
   position: absolute;
-  top: -5px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -46,3 +59,66 @@
   color: #fff;
   margin-top: 10px;
 }
+
+.pokemon-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  ion-chip {
+    color: #fff;
+  }
+}
+
+ion-menu-button {
+  color: #fff;
+}
+
+ion-menu::part(container) {
+  border-radius: 24px 0px 0px 24px;
+}
+
+ion-menu{
+  ion-toolbar {
+    --background: #a50000;
+    color:#fff
+  }
+
+  ion-item {
+    --background: #fff;
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.sidebar-item {
+  --inner-padding-end: 8px;
+  --padding-start: 16px;
+  --padding-end: 8px;
+  align-items: center;
+
+  .sidebar-item-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+
+    .name {
+      font-weight: bold;
+    }
+
+    .id-chip {
+      font-size: 0.75rem;
+      height: 20px;
+      --background: #ddd;
+      --color: #333;
+    }
+  }
+
+  .favorite-icon-menu {
+    font-size: 20px;
+    color: #fbbf24; // amarelo
+    margin-left: auto;
+  }
+}
+

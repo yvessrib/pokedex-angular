@@ -1,14 +1,45 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" id="main-content">
   <ion-toolbar class="header">
     <ion-title>Pokedex</ion-title>
+    <ion-button slot="end" fill="clear">
+      <ion-menu-button></ion-menu-button>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-content">
+<ion-menu side="end" contentId="main-content" class="sidebar-menu">
+  <ion-header class="sidebar-header">
+    <ion-toolbar>
+      <ion-title>Favorites</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="sidebar-content">
+    <ion-list *ngIf="favorites.size > 0; else noFavorites">
+      <ion-item *ngFor="let pokemon of getFavoritePokemons()" class="sidebar-item">
+        <ion-label>
+          <div class="sidebar-item-content" (click)="goToPokemonDetail(pokemon.id)">
+            <p class="name">{{ pokemon.name | titlecase }}</p>
+            <ion-chip class="id-chip">#{{ pokemon.idFormatted }}</ion-chip>
+          </div>
+        </ion-label>
 
+        <ion-icon
+          [name]="isFavorite(pokemon.id) ? 'star' : 'star-outline'"
+          class="favorite-icon-menu"
+          (click)="toggleFavorite(pokemon, $event)">
+        </ion-icon>
+      </ion-item>
+    </ion-list>
+    <ng-template #noFavorites>
+      <p class="ion-padding">No favorite Pokémon yet.</p>
+    </ng-template>
+  </ion-content>
+</ion-menu>
+
+<ion-content [fullscreen]="true" class="ion-content">
   <ion-grid>
-    <ion-row>
-      <ion-col size="8" sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of pokemons">
+    <ion-row class="ion-row">
+      <ion-col sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of pokemons">
         <ion-card id="poke-card" (click)="goToPokemonDetail(pokemon.id)">
           <div class="pokemon-card-wrapper">
             <div class="pokemon-image">
@@ -21,14 +52,19 @@
                     {{ pokemon.name | titlecase }}
                     <ion-chip slot="end" color="primary" class="pokemon-id">
                       #{{ pokemon.idFormatted }}
-                    </ion-chip>
+                    </ion-chip> 
                   </div>
                 </ion-card-title>
               </ion-card-header>
-              <ion-card-content>
+              <ion-card-content class="pokemon-content">
                 <ion-chip *ngFor="let type of pokemon.types">
                   {{ type }}
                 </ion-chip>
+                <ion-icon
+                  name="{{ isFavorite(pokemon.id) ? 'star' : 'star-outline' }}"
+                  class="favorite-icon"
+                  (click)="toggleFavorite(pokemon, $event)">
+                </ion-icon>
               </ion-card-content>
             </div>
           </div>
