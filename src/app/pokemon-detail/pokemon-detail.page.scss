@@ -12,6 +12,10 @@
   height: 45vh;
   position: relative;
 
+  @media screen and (max-width: 900px) {
+    height: 35vh;
+  }
+
   p {
     position: absolute;
     top: 10px;
@@ -38,8 +42,8 @@
   max-width: 300px;
 
   @media screen and (max-width: 900px) {
+    top: 37%;
     max-width: 200px;
-    top: 60px;
   }
 }
 
