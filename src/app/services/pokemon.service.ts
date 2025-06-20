@@ -2,7 +2,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, switchMap } from 'rxjs/operators';
+
+export interface EvolutionNode {
+  id: number;
+  name: string;
+  types: string[];
+  image: string;
+  evolves_to: EvolutionNode[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +60,45 @@ export class PokemonService {
 
   getSelectedPokemon(): any {
     return this.selectedPokemonSubject.getValue();
+  }
+
+  fetchEvolutionChain(id: string): Observable<EvolutionNode> {
+    const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${id}`;
+
+    // função recursiva limpa
+    const buildChain = (node: any): Observable<EvolutionNode> => {
+      return this.http.get<any>(`https://pokeapi.co/api/v2/pokemon/${node.species.name}`).pipe(
+        switchMap(pokemon => {
+          const currentNode: EvolutionNode = {
+            id: pokemon.id,
+            name: pokemon.name,
+            image: pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default,
+            types: pokemon.types.map((t: any) => t.type.name),
+            evolves_to: []
+          };
+
+          if (!node.evolves_to || node.evolves_to.length === 0) {
+            return new Observable<EvolutionNode>(observer => {
+              observer.next(currentNode);
+              observer.complete();
+            });
+          }
+
+          return forkJoin(node.evolves_to.map(buildChain)).pipe(
+            map(children => {
+              currentNode.evolves_to = children as EvolutionNode[];
+              return currentNode;
+            })
+          );
+        })
+      );
+    };
+
+    return this.http.get<any>(speciesUrl).pipe(
+      map(species => species.evolution_chain.url),
+      switchMap(evoUrl => this.http.get<any>(evoUrl)),
+      switchMap(evoData => buildChain(evoData.chain))
+    );
   }
 
   getTypeColor(type: string): string {

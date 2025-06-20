@@ -26,6 +26,10 @@ export const routes: Routes = [
           {
             path: 'skills',
             loadComponent: () => import('./pokemon-detail/tabs/skills/tabs-skills.component').then(m => m.PokemonSkillsComponent)
+          },
+          {
+            path: 'evolution',
+            loadComponent: () => import('./pokemon-detail/tabs/evolution/tabs-evolution.component').then(m => m.PokemonEvolutionComponent)
           }
         ]
       }

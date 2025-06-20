@@ -1,0 +1,40 @@
+<ion-content class="ion-padding ion-content">
+  <div class="evolution-container">
+    <h2 class="evolution-title">Evolution Chain</h2>
+    <ul class="evolution-tree" *ngIf="evolutionTree">
+      <ng-container *ngTemplateOutlet="renderNode; context: { node: evolutionTree, isFirst: true }"></ng-container>
+    </ul>
+
+    <ng-template #renderNode let-node="node" let-isFirst="isFirst">
+      <li class="evolution-node">
+        <div class="pokemon-info">
+          <img [src]="node.image" [alt]="node.name" />
+          <div class="details">
+            <strong>#{{ node.id }} - {{ node.name | titlecase }}</strong>
+            <div class="types">
+              <span class="type" *ngFor="let type of node.types" [style.background]="pokemonService.getTypeColor(type)">
+                {{ type }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- seta para baixo -->
+        <div class="arrow" *ngIf="node.evolves_to?.length === 1">
+          <ion-icon name="arrow-down-outline"></ion-icon>
+        </div>
+
+        <!-- ramificações múltiplas -->
+        <div class="branch-container" *ngIf="node.evolves_to?.length > 1">
+          <div class="branch-line"></div>
+        </div>
+
+        <div class="evolutions">
+          <ng-container *ngFor="let child of node.evolves_to">
+            <ng-container *ngTemplateOutlet="renderNode; context: { node: child, isFirst: false }"></ng-container>
+          </ng-container>
+        </div>
+      </li>
+    </ng-template>
+  </div>
+</ion-content>

@@ -36,10 +36,6 @@ export class PokemonsStatsComponent implements OnInit {
 
     this.pokemonService.selectedPokemon$.subscribe(p => {
       this.pokemon = p;
-      console.log("Stats object:", this.pokemon.stats);
-      console.log("stats page pokemon", this.pokemon);
-      console.log("Stats keys:", Object.keys(this.pokemon.stats));
-
     });
   }
 }
