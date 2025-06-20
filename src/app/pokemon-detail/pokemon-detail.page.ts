@@ -5,7 +5,6 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonChip, IonButton, IonIco
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PokemonService } from '../services/pokemon.service';
-import { PokemonTabsComponent } from './tabs/pokemon-tabs.component';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline } from 'ionicons/icons';
 
@@ -25,7 +24,6 @@ addIcons({
     IonToolbar, 
     CommonModule, 
     FormsModule, 
-    PokemonTabsComponent,
     RouterOutlet,
     IonChip,
     IonButton,
