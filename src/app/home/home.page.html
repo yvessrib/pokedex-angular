@@ -1,9 +1,19 @@
 <ion-header [translucent]="true" id="main-content">
-  <ion-toolbar class="header">
-    <ion-title>Pokedex</ion-title>
-    <ion-button slot="end" fill="clear">
+  <ion-toolbar class="toolbar-header">
+    <ion-title slot="start">Pokedex</ion-title>
+
+    <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
-    </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar class="search-toolbar">
+    <ion-searchbar
+      class="search-bar"
+      placeholder="Search Pokemon"
+      [(ngModel)]="searchTerm"
+      (ionInput)="applyFilters()">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -39,7 +49,7 @@
 <ion-content [fullscreen]="true" class="ion-content">
   <ion-grid>
     <ion-row class="ion-row">
-      <ion-col sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of pokemons">
+      <ion-col sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of filteredPokemons">
         <ion-card id="poke-card" (click)="goToPokemonDetail(pokemon.id)">
           <div class="pokemon-card-wrapper">
             <div class="pokemon-image">

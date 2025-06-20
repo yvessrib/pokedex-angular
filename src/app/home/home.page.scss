@@ -7,6 +7,22 @@
   border: none;
 }
 
+.toolbar-header {
+  --background: #a50000;
+  color: #fff;
+}
+
+.search-toolbar {
+  --background: #a50000;
+  padding: 0 8px;
+}
+
+.search-bar {
+  --background: #fff;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
 .ion-row {
   display: flex;
   justify-content: center;
@@ -121,4 +137,3 @@ ion-menu{
     margin-left: auto;
   }
 }
-

@@ -25,10 +25,14 @@ import {
   IonList,
   IonItem,
   IonLabel,
+  IonSearchbar,
+  IonSelectOption,
+  IonButtons
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
 import { star, starOutline } from 'ionicons/icons';
+import { FormsModule } from '@angular/forms';
 
 addIcons({
   'star': star,
@@ -64,12 +68,19 @@ addIcons({
     IonMenu,
     IonList,
     IonItem,
-    IonLabel
+    IonLabel,
+    IonSearchbar,
+    IonSelectOption,
+    FormsModule,
+    IonButtons
   ],
 })
 export class HomePage implements OnInit {
   pokemons: any[] = [];
   favorites = new Set<number>();
+
+  searchTerm = ''
+  filteredPokemons: any[] = [];
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -94,6 +105,14 @@ export class HomePage implements OnInit {
 
   getFavoritePokemons() {
     return this.pokemons.filter(p => this.favorites.has(p.id));
+  }
+
+  applyFilters() {
+    this.filteredPokemons = this.pokemons.filter(pokemon => {
+      const matchesName = pokemon.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+      return matchesName
+    });
   }
 
   ngOnInit() {
@@ -135,6 +154,8 @@ export class HomePage implements OnInit {
             this.offset += this.limit;
             if (!response.next) this.isDone = true;
             this.isLoading = false;
+            
+            this.applyFilters();
           });
       },
       error: (err) => {
@@ -142,7 +163,7 @@ export class HomePage implements OnInit {
         this.isLoading = false;
       }
     });
-}
+  }
   loadMore(event: any) {
     this.loadPokemons();
     setTimeout(() => {
