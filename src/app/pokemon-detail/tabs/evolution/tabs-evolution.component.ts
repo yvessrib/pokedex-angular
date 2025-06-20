@@ -4,16 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { PokemonService } from 'src/app/services/pokemon.service';
 import { 
   IonContent,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonCol,
-  IonGrid,
-  IonRow,
-  IonImg,
-  IonText,
-  IonChip,
   IonIcon,
 } from '@ionic/angular/standalone';
 
@@ -32,16 +22,6 @@ addIcons({
   imports: [
     CommonModule, 
     IonContent,
-    IonCard,
-    IonCardContent,
-    IonCardHeader,
-    IonCardTitle,
-    IonCol,
-    IonGrid,
-    IonRow,
-    IonImg,
-    IonText,
-    IonChip,
     IonIcon
   ],
 })
