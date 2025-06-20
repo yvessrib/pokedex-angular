@@ -51,7 +51,7 @@ export class HomePage implements OnInit {
   constructor(private router: Router, private http: HttpClient) {}
 
   goToPokemonDetail(pokemonId: number) {
-    this.router.navigate(['/pokedex', pokemonId]);
+    this.router.navigate(['/pokedex', pokemonId, 'stats']);
   }
 
   ngOnInit() {

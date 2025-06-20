@@ -1,6 +1,14 @@
 <ion-header [translucent]="true">
-  <ion-toolbar class="header" >
-    <ion-title *ngIf="pokemon" >Pokedex - {{ pokemon?.name | titlecase }} #{{pokemon?.idFormatted}}</ion-title>
+  <ion-toolbar class="header toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goToPokedex()" fill="clear" class="back-button">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="pokemon">
+      Pokedex - {{ pokemon?.name | titlecase }} #{{ pokemon?.idFormatted }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 

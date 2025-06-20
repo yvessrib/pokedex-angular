@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonChip } from '@ionic/angular/standalone';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonChip, IonButton, IonIcon, IonButtons } from '@ionic/angular/standalone';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PokemonService } from '../services/pokemon.service';
 import { PokemonTabsComponent } from './tabs/pokemon-tabs.component';
+import { addIcons } from 'ionicons';
+import { arrowBackOutline } from 'ionicons/icons';
+
+addIcons({
+  'arrow-back-outline': arrowBackOutline
+});
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -21,14 +27,21 @@ import { PokemonTabsComponent } from './tabs/pokemon-tabs.component';
     FormsModule, 
     PokemonTabsComponent,
     RouterOutlet,
-    IonChip
+    IonChip,
+    IonButton,
+    IonIcon,
+    IonButtons
   ]
 })
 export class PokemonDetailPage implements OnInit {
 
   pokemon: any;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, public pokemonService: PokemonService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient, public pokemonService: PokemonService) { }
+
+  goToPokedex() {
+    this.router.navigate(['/pokedex']);
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
