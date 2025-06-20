@@ -1,0 +1,96 @@
+.ion-padding {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.evolution-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+
+  .evolution-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .evolution-tree {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: fit-content;
+    max-width: 400px;
+
+    .evolution-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+      position: relative;
+
+      .pokemon-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+
+        img {
+          width: 140px;
+          height: auto;
+        }
+
+        .details {
+          display: flex;
+          flex-direction: column;
+          color: #000;
+          font-size: 1rem;
+          gap: 4px;
+
+          .types {
+            display: flex;
+            gap: 0.5rem;
+
+            .type {
+              padding: 2px 8px;
+              border-radius: 12px;
+              color: white;
+              font-size: 0.75rem;
+              text-transform: capitalize;
+            }
+          }
+        }
+      }
+
+      .arrow {
+        margin: 0.5rem 0;
+        ion-icon {
+          font-size: 24px;
+          color: #242424;
+        }
+      }
+
+      .branch-container {
+        width: 100%;
+        height: 10px;
+        position: relative;
+
+        .branch-line {
+          height: 2px;
+          width: 100%;
+          background: #ccc;
+          margin: 8px 0;
+        }
+      }
+
+      .evolutions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
+      }
+    }
+  }
+}

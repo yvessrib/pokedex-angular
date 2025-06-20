@@ -1,31 +1,139 @@
-#header {
-  background-color: #fd0000;
+#poke-card {
+  width: 100%;
+  margin: 0 auto;
+  --background: transparent;
+  box-shadow: none;
+  padding-bottom: 10px;
+  border: none;
 }
 
-#container {
-  text-align: center;
+.toolbar-header {
+  --background: #a50000;
+  color: #fff;
+}
 
+.search-toolbar {
+  --background: #a50000;
+  padding: 0 8px;
+}
+
+.search-bar {
+  --background: #fff;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.ion-row {
+  display: flex;
+  justify-content: center;
+  padding: 2px;
+}
+
+.favorite-icon {
+  font-size: 25px;
+  margin-left: auto;
+  color: #fff;
+  cursor: pointer;
+}
+
+.pokemon-card-wrapper {
+  position: relative;
+  padding-top: 80px; /* reserva espaço no topo para a imagem */
+}
+
+.poke-card-content {
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+  padding-top: 20px;
+}
+
+.pokemon-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0px;
+  color: #fff;
+}
+
+.pokemon-image {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 120px;
+    max-height: 120px;
+  }
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.pokemon-id {
+  font-size: 0.8rem;
+  color: #fff;
+  margin-top: 10px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+.pokemon-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  ion-chip {
+    color: #fff;
+  }
 }
 
-#container a {
-  text-decoration: none;
+ion-menu-button {
+  color: #fff;
+}
+
+ion-menu::part(container) {
+  border-radius: 24px 0px 0px 24px;
+}
+
+ion-menu{
+  ion-toolbar {
+    --background: #a50000;
+    color:#fff
+  }
+
+  ion-item {
+    --background: #fff;
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.sidebar-item {
+  --inner-padding-end: 8px;
+  --padding-start: 16px;
+  --padding-end: 8px;
+  align-items: center;
+
+  .sidebar-item-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+
+    .name {
+      font-weight: bold;
+    }
+
+    .id-chip {
+      font-size: 0.75rem;
+      height: 20px;
+      --background: #ddd;
+      --color: #333;
+    }
+  }
+
+  .favorite-icon-menu {
+    font-size: 20px;
+    color: #fbbf24; // amarelo
+    margin-left: auto;
+  }
 }

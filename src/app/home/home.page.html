@@ -1,20 +1,86 @@
-<ion-header [translucent]="true">
-  <ion-toolbar  id="header">
-    <ion-title>
-      Pokedex
-    </ion-title>
+<ion-header [translucent]="true" id="main-content">
+  <ion-toolbar class="toolbar-header">
+    <ion-title slot="start">Pokedex</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar class="search-toolbar">
+    <ion-searchbar
+      class="search-bar"
+      placeholder="Search Pokemon"
+      [(ngModel)]="searchTerm"
+      (ionInput)="applyFilters()">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ion-menu side="end" contentId="main-content" class="sidebar-menu">
+  <ion-header class="sidebar-header">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title>Favorites</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-content class="sidebar-content">
+    <ion-list *ngIf="favorites.size > 0; else noFavorites">
+      <ion-item *ngFor="let pokemon of getFavoritePokemons()" class="sidebar-item">
+        <ion-label>
+          <div class="sidebar-item-content" (click)="goToPokemonDetail(pokemon.id)">
+            <p class="name">{{ pokemon.name | titlecase }}</p>
+            <ion-chip class="id-chip">#{{ pokemon.idFormatted }}</ion-chip>
+          </div>
+        </ion-label>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+        <ion-icon
+          [name]="isFavorite(pokemon.id) ? 'star' : 'star-outline'"
+          class="favorite-icon-menu"
+          (click)="toggleFavorite(pokemon, $event)">
+        </ion-icon>
+      </ion-item>
+    </ion-list>
+    <ng-template #noFavorites>
+      <p class="ion-padding">No favorite Pokémon yet.</p>
+    </ng-template>
+  </ion-content>
+</ion-menu>
+
+<ion-content [fullscreen]="true" class="ion-content">
+  <ion-spinner *ngIf="isLoading" name="crescent" style="display: block; margin: 50px auto;"></ion-spinner>
+  <ion-grid>
+    <ion-row class="ion-row">
+      <ion-col sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of filteredPokemons; trackBy: trackByPokemonId">
+        <ion-card id="poke-card" (click)="goToPokemonDetail(pokemon.id)">
+          <div class="pokemon-card-wrapper">
+            <div class="pokemon-image">
+              <img [src]="pokemon.image" alt="{{ pokemon.name }}" />
+            </div>
+            <div class="poke-card-content" [style.background]="getTypeColor(pokemon.types[0])">
+              <ion-card-header>
+                <ion-card-title>
+                  <div class="pokemon-header">
+                    {{ pokemon.name | titlecase }}
+                    <ion-chip slot="end" color="primary" class="pokemon-id">
+                      #{{ pokemon.idFormatted }}
+                    </ion-chip> 
+                  </div>
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content class="pokemon-content">
+                <ion-chip *ngFor="let type of pokemon.types">
+                  {{ type }}
+                </ion-chip>
+                <ion-icon
+                  name="{{ isFavorite(pokemon.id) ? 'star' : 'star-outline' }}"
+                  class="favorite-icon"
+                  (click)="toggleFavorite(pokemon, $event)">
+                </ion-icon>
+              </ion-card-content>
+            </div>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

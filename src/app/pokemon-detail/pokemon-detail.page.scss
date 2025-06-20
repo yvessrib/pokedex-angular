@@ -1,0 +1,90 @@
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+ion-toolbar {
+  --background: #a00; // Ou qualquer cor de fundo
+  --color: white;     // Cor do texto e ícone
+}
+
+.back-button {
+  --background: transparent;
+  --box-shadow: none;
+  --color: white;
+  margin-right: 0.5rem;
+
+  ion-icon {
+    font-size: 24px;
+  }
+}
+
+.pokemon-detail-wrapper {
+  position: relative;
+  background: transparent;
+  height: auto;
+}
+
+.pokemon-detail-header {
+  background: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45vh;
+  position: relative;
+
+  @media screen and (max-width: 900px) {
+    height: 35vh;
+  }
+
+  p {
+    position: absolute;
+    top: 10px;
+    left: 2%;
+    z-index: 5;
+    color: #fff;
+    font-size: 5rem;
+    margin: 0;
+
+    @media screen and (max-width: 900px) {
+      font-size: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.pokemon-image {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  max-width: 300px;
+
+  @media screen and (max-width: 900px) {
+    top: 37%;
+    max-width: 200px;
+  }
+}
+
+.pokemon-detail-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+  margin: -40px 8px 8px 8px; // Sobe por cima do header colorido
+  padding: 24px;
+  min-height: 100vh
+  // height: 100vh;
+  // min-height: calc(100vh - 120px); // ✅ Para garantir uma altura mínima
+} 
+
+.pokemon-types {
+  margin-top: 30px;;
+}

@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="header toolbar">
+    <ion-buttons slot="start">
+      <ion-button (click)="goToPokedex()" fill="clear" class="back-button">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="pokemon">
+      Pokedex - {{ pokemon?.name | titlecase }} #{{ pokemon?.idFormatted }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="pokemon" [fullscreen]="true" class="ion-content">
+  <div class="pokemon-detail-wrapper" [style.background]="getTypeColor(pokemon?.types[0])">    
+    <div class="pokemon-detail-header">
+      <p>{{ pokemon.name | titlecase }}</p>
+      <img [src]="pokemon?.image" alt="{{ pokemon?.name }}" class="pokemon-image" />
+    </div>
+
+    <div class="pokemon-detail-content">
+      <div class="pokemon-types">
+        <ion-chip *ngFor="let type of pokemon.types"  [ngStyle]="{ '--background': getTypeColor(type), 'color': '#fff' }" class="pokemon-type-chip">
+          {{ type | titlecase }}
+        </ion-chip>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</ion-content>

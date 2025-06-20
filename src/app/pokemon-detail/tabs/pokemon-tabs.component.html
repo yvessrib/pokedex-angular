@@ -1,0 +1,29 @@
+<ion-tabs >
+  <ion-tab-bar class="pokemon-tabs" slot="top">
+    <ion-tab-button 
+      tab="stats" 
+      class="tab" 
+      [ngClass]="{'active': activeTab === 'stats'}"
+      [ngStyle]="{
+        '--background': activeTab === 'stats' ? typeColor : 'transparent',
+        '--color': activeTab === 'stats' ? 'white' : '#444'
+      }"
+      (click)="selectTab('stats')"
+    >
+      Stats
+    </ion-tab-button>
+
+    <ion-tab-button 
+      tab="evolution" 
+      class="tab"
+      [ngClass]="{'active': activeTab === 'evolution'}"
+      [ngStyle]="{
+        '--background': activeTab === 'evolution' ? typeColor : 'transparent',
+        '--color': activeTab === 'evolution' ? 'white' : '#444'
+      }"
+      (click)="selectTab('evolution')"
+    >
+      Evolution
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
