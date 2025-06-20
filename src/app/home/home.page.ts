@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import {
   IonCol,
   IonGrid,
   IonRow,
-  IonChip, // necessário para os tipos
+  IonChip,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   IonIcon,
@@ -27,12 +27,15 @@ import {
   IonLabel,
   IonSearchbar,
   IonSelectOption,
-  IonButtons
+  IonButtons,
+  IonSpinner
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
 import { star, starOutline } from 'ionicons/icons';
 import { FormsModule } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 addIcons({
   'star': star,
@@ -72,17 +75,56 @@ addIcons({
     IonSearchbar,
     IonSelectOption,
     FormsModule,
-    IonButtons
+    IonButtons,
+    IonSpinner
   ],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   pokemons: any[] = [];
   favorites = new Set<number>();
 
-  searchTerm = ''
+  searchTerm = '';
   filteredPokemons: any[] = [];
 
+  private searchSubject = new Subject<string>();
+  private searchSubscription!: Subscription;
+
+  isLoading = false;
+  isDone = false;
+
   constructor(private router: Router, private http: HttpClient) {}
+
+  ngOnInit() {
+    const storedFavorites = localStorage.getItem('favorites');
+    if (storedFavorites) {
+      this.favorites = new Set(JSON.parse(storedFavorites));
+    }
+
+    this.searchSubscription = this.searchSubject
+      .pipe(debounceTime(300))
+      .subscribe(searchText => {
+        this.filterPokemons(searchText);
+      });
+
+    this.loadAllPokemons();
+  }
+
+  ngOnDestroy(): void {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+  }
+
+  applyFilters() {
+    this.searchSubject.next(this.searchTerm);
+  }
+
+  filterPokemons(searchText: string) {
+    const lowerTerm = searchText.toLowerCase();
+    this.filteredPokemons = this.pokemons.filter(pokemon =>
+      pokemon.name.toLowerCase().includes(lowerTerm)
+    );
+  }
 
   goToPokemonDetail(pokemonId: number) {
     this.router.navigate(['/pokedex', pokemonId, 'stats']);
@@ -90,7 +132,6 @@ export class HomePage implements OnInit {
 
   toggleFavorite(pokemon: any, event: Event) {
     event.stopPropagation();
-
     if (this.favorites.has(pokemon.id)) {
       this.favorites.delete(pokemon.id);
     } else {
@@ -107,70 +148,38 @@ export class HomePage implements OnInit {
     return this.pokemons.filter(p => this.favorites.has(p.id));
   }
 
-  applyFilters() {
-    this.filteredPokemons = this.pokemons.filter(pokemon => {
-      const matchesName = pokemon.name.toLowerCase().includes(this.searchTerm.toLowerCase());
-
-      return matchesName
-    });
+  trackByPokemonId(index: number, pokemon: any) {
+    return pokemon.id;
   }
 
-  ngOnInit() {
-    const storedFavorites = localStorage.getItem('favorites');
-    if (storedFavorites) {
-      this.favorites = new Set(JSON.parse(storedFavorites));
-    }
-
-    this.loadPokemons();
-  }
-
-  limit = 18
-  offset = 0;
-  isLoading = false;
-  isDone = false
-
-  async loadPokemons() {
-    if (this.isLoading || this.isDone) return;
-
+  async loadAllPokemons() {
     this.isLoading = true;
-
-    this.http.get<any>(`https://pokeapi.co/api/v2/pokemon?offset=${this.offset}&limit=${this.limit}`)
-    .subscribe({
-      next: (response) => {
-        const requests = response.results.map((pokemon: any) => this.http.get(pokemon.url));
-        Promise.all(requests.map((req: { toPromise: () => any; }) => req.toPromise()))
-          .then((details: any[]) => {
-            const newPokemons = details.map((data: any) => ({
-              id: data.id,
-              idFormatted: data.id.toString().padStart(3, '0'),
-              name: data.name,
-              image: data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
-              types: data.types.map((t: any) => t.type.name)
-            }));
-
-            this.pokemons.push(...newPokemons);
-            this.pokemons.sort((a, b) => a.id - b.id);
-
-            this.offset += this.limit;
-            if (!response.next) this.isDone = true;
-            this.isLoading = false;
-            
-            this.applyFilters();
-          });
-      },
-      error: (err) => {
-        console.error(`Erro ao carregar pokémons:`, err);
-        this.isLoading = false;
-      }
-    });
+    this.http.get<any>('https://pokeapi.co/api/v2/pokemon?offset=0&limit=1025')
+      .subscribe({
+        next: (response) => {
+          const requests = response.results.map((pokemon: any) => this.http.get(pokemon.url));
+          Promise.all(requests.map((req: any) => req.toPromise()))
+            .then((details: any[]) => {
+              this.pokemons = details.map((data: any) => ({
+                id: data.id,
+                idFormatted: data.id.toString().padStart(3, '0'),
+                name: data.name,
+                image: data.sprites.other['official-artwork'].front_default || data.sprites.front_default,
+                types: data.types.map((t: any) => t.type.name)
+              }));
+              this.pokemons.sort((a, b) => a.id - b.id);
+              this.isLoading = false;
+              this.isDone = true;
+              this.filterPokemons(this.searchTerm);
+            });
+        },
+        error: (err) => {
+          console.error(`Erro ao carregar todos os pokémons:`, err);
+          this.isLoading = false;
+        }
+      });
   }
-  loadMore(event: any) {
-    this.loadPokemons();
-    setTimeout(() => {
-      event.target.complete();
-    }, 500);
-  }
-    
+
   getTypeColor(type: string): string {
     const colors: { [key: string]: string } = {
       fire: '#F08030',

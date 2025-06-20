@@ -47,9 +47,10 @@
 </ion-menu>
 
 <ion-content [fullscreen]="true" class="ion-content">
+  <ion-spinner *ngIf="isLoading" name="crescent" style="display: block; margin: 50px auto;"></ion-spinner>
   <ion-grid>
     <ion-row class="ion-row">
-      <ion-col sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of filteredPokemons">
+      <ion-col sizeSm="6" sizeMd="4" sizeLg="2" *ngFor="let pokemon of filteredPokemons; trackBy: trackByPokemonId">
         <ion-card id="poke-card" (click)="goToPokemonDetail(pokemon.id)">
           <div class="pokemon-card-wrapper">
             <div class="pokemon-image">
@@ -82,10 +83,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
-    <ion-infinite-scroll-content loadingSpinner="dots" loadingText="Carregando...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-
 </ion-content>
